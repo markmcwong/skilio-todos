@@ -1,6 +1,6 @@
 {
-  "name": "angular-ngrx-material-starter",
-  "version": "10.1.2",
+  "name": "Skilio Todos",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -13,15 +13,11 @@
     "watch": "ng test --configuration=test --browsers ChromeHeadless --watch --reporters dots",
     "e2e": "ng e2e",
     "e2e:ci": "ng e2e",
-    "ci": "npm run format:test && npm run lint && ng test --configuration=test --browsers ChromeTravisCi --code-coverage && npm run build:prod -- --deploy-url /angular-ngrx-material-starter/ --base-href /angular-ngrx-material-starter",
+    "ci": "npm run format:test && npm run lint && ng test --configuration=test --browsers ChromeTravisCi --code-coverage",
     "format:write": "prettier projects/**/*.{ts,json,md,scss} --write",
     "format:test": "prettier projects/**/*.{ts,json,md,scss} --list-different",
-    "release": "standard-version && git push --follow-tags origin master",
     "analyze": "npm run build:prod -- --stats-json && webpack-bundle-analyzer ./dist/angular-ngrx-material-starter/stats-es2015.json",
-    "server": "node ./projects/server/server.js",
-    "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate && node .all-contributors-html.js",
-    "contributors:check": "all-contributors check"
+    "server": "node ./projects/server/server.js"
   },
   "husky": {
     "hooks": {
@@ -43,6 +39,7 @@
     "@angular/common": "~11.1.2",
     "@angular/compiler": "~11.1.2",
     "@angular/core": "~11.1.2",
+    "@angular/fire": "^6.1.4",
     "@angular/forms": "~11.1.2",
     "@angular/material": "~11.2.0",
     "@angular/platform-browser": "~11.1.2",
@@ -62,6 +59,7 @@
     "@ngx-translate/http-loader": "^6.0.0",
     "bootstrap": "^4.5.3",
     "browser-detect": "^0.2.28",
+    "firebase": "^8.4.3",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
     "uuid": "^8.3.1",
