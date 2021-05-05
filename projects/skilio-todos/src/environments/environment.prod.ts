@@ -5,7 +5,7 @@ export const environment = {
   envName: 'PROD',
   production: true,
   test: false,
-  i18nPrefix: '/angular-ngrx-material-starter',
+  i18nPrefix: '/skilio-todos',
   versions: {
     app: packageJson.version,
     angular: packageJson.dependencies['@angular/core'],
