@@ -21,7 +21,7 @@ import {
 
 import * as todoActions from '../todos.actions';
 import { Todo, TodosFilter } from '../todos.model';
-import { selectTodos, selectRemoveDoneTodosDisabled } from '../todos.selectors';
+import { selectTodos } from '../todos.selectors';
 
 @Component({
   selector: 'anms-todos',
@@ -34,12 +34,10 @@ export class TodosContainerComponent implements OnInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   todos$: Observable<Todo[]>;
   filter$: Observable<TodosFilter>;
-  removeDoneDisabled$: Observable<boolean>;
   newTodo = '';
   editingValue = '';
   isEdit$: Observable<boolean>;
   selectedTodo$: Observable<Todo>;
-  coffeeOrders;
   fileAttr = 'No File Chosen';
   imgUrl = '';
 
@@ -56,12 +54,10 @@ export class TodosContainerComponent implements OnInit {
     this.todos$ = this.store.pipe(select(selectTodos));
     this.selectedTodo$ = this.store.pipe(select(selectSelectedTodo));
     this.filter$ = this.store.pipe(select(selectTodosFilter));
-    this.removeDoneDisabled$ = this.store.pipe(
-      select(selectRemoveDoneTodosDisabled)
-    );
+    // Checks if user has selected a todos to edit by checking null
     this.isEdit$ = this.store.pipe(
       select(selectSelectedTodo),
-      map((x) => x != null)
+      map((editingSelectedTodo) => editingSelectedTodo != null)
     );
   }
 
@@ -78,7 +74,6 @@ export class TodosContainerComponent implements OnInit {
   }
 
   onAddTodo() {
-    console.log(this.newTodo);
     this.store.dispatch(
       todoActions.actionTodosAdd(this.newTodo, this.imgUrl, Date.now())
     );
@@ -109,6 +104,7 @@ export class TodosContainerComponent implements OnInit {
       { name: todo.name }
     );
 
+    // show notification of the status of the todo
     this.snackBar
       .open(`${toggledMessage} ${newStatus}`, undo, {
         duration: 2500,
@@ -128,21 +124,12 @@ export class TodosContainerComponent implements OnInit {
   }
 
   onEditTodoSubmit(todo: Todo) {
-    console.log(this.editingValue);
     this.store.dispatch(
       todoActions.actionTodosEditSubmit({
         id: todo.id,
         name: this.editingValue
       })
     );
-  }
-
-  onRemoveDoneTodos() {
-    this.store.dispatch(todoActions.actionTodosRemoveDone());
-    const removedMessage = this.translateService.instant(
-      'anms.examples.todos.remove.notification'
-    );
-    this.notificationService.info(removedMessage);
   }
 
   onFilterTodos(filter: TodosFilter) {
@@ -156,6 +143,7 @@ export class TodosContainerComponent implements OnInit {
     this.notificationService.info(`${filterToMessage} ${filterMessage}`);
   }
 
+  // drag and drop sorting not implemented therefore commented out
   // drop(event: CdkDragDrop<Todo[]>) {
   //   this.todos$.subscribe((todo) => {
   //     const tempTodos:Todo[] = [...todo];
@@ -164,13 +152,13 @@ export class TodosContainerComponent implements OnInit {
   //   });
   // }
 
-  uploadFileEvt(imgFile: any) {
+  // upload file using firestore, then assign the url to imgUrl
+  uploadFile(imgFile: any) {
     if (imgFile.target.files && imgFile.target.files[0]) {
       this.fileAttr = imgFile.target.files[0].name;
       const file = imgFile.target.files[0];
       const fileRef = this.storage.ref('/').child(this.fileAttr);
       const task = this.storage.upload(Date.now() + '-' + this.fileAttr, file);
-      console.log('hello');
       task
         .snapshotChanges()
         .pipe(

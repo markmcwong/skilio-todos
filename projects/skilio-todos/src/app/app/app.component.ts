@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
   logo = require('../../assets/logo.png').default;
   languages = ['en', 'de', 'sk', 'fr', 'es', 'pt-br', 'zh-cn', 'he'];
   navigationSideMenu = [{ link: 'settings', label: 'anms.menu.settings' }];
-
   stickyHeader$: Observable<boolean>;
   language$: Observable<string>;
   theme$: Observable<string>;
@@ -54,7 +53,7 @@ export class AppComponent implements OnInit {
         })
       );
     }
-
+    // load default settings
     this.stickyHeader$ = this.store.pipe(select(selectSettingsStickyHeader));
     this.language$ = this.store.pipe(select(selectSettingsLanguage));
     this.theme$ = this.store.pipe(select(selectEffectiveTheme));

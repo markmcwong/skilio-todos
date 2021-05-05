@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-ngrx-material-starter": {
+    "skilio-todos": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -11,26 +11,26 @@
           "style": "scss"
         }
       },
-      "root": "projects/angular-ngrx-material-starter",
-      "sourceRoot": "projects/angular-ngrx-material-starter/src",
+      "root": "projects/skilio-todos",
+      "sourceRoot": "projects/skilio-todos/src",
       "prefix": "anms",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-ngrx-material-starter",
-            "index": "projects/angular-ngrx-material-starter/src/index.html",
-            "main": "projects/angular-ngrx-material-starter/src/main.ts",
-            "polyfills": "projects/angular-ngrx-material-starter/src/polyfills.ts",
-            "tsConfig": "projects/angular-ngrx-material-starter/tsconfig.app.json",
+            "outputPath": "dist/skilio-todos",
+            "index": "projects/skilio-todos/src/index.html",
+            "main": "projects/skilio-todos/src/main.ts",
+            "polyfills": "projects/skilio-todos/src/polyfills.ts",
+            "tsConfig": "projects/skilio-todos/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "projects/angular-ngrx-material-starter/src/favicon.ico",
-              "projects/angular-ngrx-material-starter/src/assets"
+              "projects/skilio-todos/src/favicon.ico",
+              "projects/skilio-todos/src/assets"
             ],
             "styles": [
-              "projects/angular-ngrx-material-starter/src/styles-app-loading.scss",
-              "projects/angular-ngrx-material-starter/src/styles.scss"
+              "projects/skilio-todos/src/styles-app-loading.scss",
+              "projects/skilio-todos/src/styles.scss"
             ],
             "scripts": []
           },
@@ -38,8 +38,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/angular-ngrx-material-starter/src/environments/environment.ts",
-                  "with": "projects/angular-ngrx-material-starter/src/environments/environment.prod.ts"
+                  "replace": "projects/skilio-todos/src/environments/environment.ts",
+                  "with": "projects/skilio-todos/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -82,34 +82,34 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-ngrx-material-starter:build"
+            "browserTarget": "skilio-todos:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-ngrx-material-starter:build:production"
+              "browserTarget": "skilio-todos:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-ngrx-material-starter:build"
+            "browserTarget": "skilio-todos:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/angular-ngrx-material-starter/src/test.ts",
-            "polyfills": "projects/angular-ngrx-material-starter/src/polyfills.ts",
-            "tsConfig": "projects/angular-ngrx-material-starter/tsconfig.spec.json",
-            "karmaConfig": "projects/angular-ngrx-material-starter/karma.conf.js",
+            "main": "projects/skilio-todos/src/test.ts",
+            "polyfills": "projects/skilio-todos/src/polyfills.ts",
+            "tsConfig": "projects/skilio-todos/tsconfig.spec.json",
+            "karmaConfig": "projects/skilio-todos/karma.conf.js",
             "assets": [
-              "projects/angular-ngrx-material-starter/src/favicon.ico",
-              "projects/angular-ngrx-material-starter/src/assets"
+              "projects/skilio-todos/src/favicon.ico",
+              "projects/skilio-todos/src/assets"
             ],
             "styles": [
-              "projects/angular-ngrx-material-starter/src/styles-app-loading.scss",
-              "projects/angular-ngrx-material-starter/src/styles.scss"
+              "projects/skilio-todos/src/styles-app-loading.scss",
+              "projects/skilio-todos/src/styles.scss"
             ],
             "scripts": []
           },
@@ -117,8 +117,8 @@
             "test": {
               "fileReplacements": [
                 {
-                  "replace": "projects/angular-ngrx-material-starter/src/environments/environment.ts",
-                  "with": "projects/angular-ngrx-material-starter/src/environments/environment.test.ts"
+                  "replace": "projects/skilio-todos/src/environments/environment.ts",
+                  "with": "projects/skilio-todos/src/environments/environment.test.ts"
                 }
               ]
             }
@@ -128,9 +128,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/angular-ngrx-material-starter/tsconfig.app.json",
-              "projects/angular-ngrx-material-starter/tsconfig.spec.json",
-              "projects/angular-ngrx-material-starter/e2e/tsconfig.json"
+              "projects/skilio-todos/tsconfig.app.json",
+              "projects/skilio-todos/tsconfig.spec.json",
+              "projects/skilio-todos/e2e/tsconfig.json"
             ],
             "exclude": ["**/node_modules/**"]
           }
@@ -138,19 +138,19 @@
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "projects/angular-ngrx-material-starter/e2e/protractor.conf.js",
-            "devServerTarget": "angular-ngrx-material-starter:serve"
+            "protractorConfig": "projects/skilio-todos/e2e/protractor.conf.js",
+            "devServerTarget": "skilio-todos:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angular-ngrx-material-starter:serve:production"
+              "devServerTarget": "skilio-todos:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "angular-ngrx-material-starter",
+  "defaultProject": "skilio-todos",
   "cli": {
     "analytics": false
   }

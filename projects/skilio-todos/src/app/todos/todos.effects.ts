@@ -24,6 +24,7 @@ export const TODOS_KEY = 'EXAMPLES.TODOS';
 
 @Injectable()
 export class TodosEffects {
+  // any action will save the changes to localStorage
   persistTodos = createEffect(
     () =>
       this.actions$.pipe(
@@ -66,6 +67,7 @@ export class TodosEffects {
         this.service.getTodos().pipe(
           map((todos) =>
             actionTodosGetSuccess({
+              // sort todos based on timestamp
               todos: todos.sort((a, b) =>
                 a.timestamp > b.timestamp
                   ? 1

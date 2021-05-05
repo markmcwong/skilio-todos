@@ -34,8 +34,3 @@ export const selectTodos = createSelector(
     }
   }
 );
-
-export const selectRemoveDoneTodosDisabled = createSelector(
-  selectTodosItems,
-  (items) => !items.some((item) => item.done)
-);

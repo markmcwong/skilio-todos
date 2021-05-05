@@ -14,11 +14,7 @@ import { SharedModule } from '../../shared/shared.module';
 import * as todoActions from '../todos.actions';
 import { Todo, TodosFilter } from '../todos.model';
 import { TodosContainerComponent } from './todos-container.component';
-import {
-  selectRemoveDoneTodosDisabled,
-  selectTodos,
-  selectTodosFilter
-} from '../todos.selectors';
+import { selectTodos, selectTodosFilter } from '../todos.selectors';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import {
@@ -34,9 +30,7 @@ describe('TodosComponent', () => {
   let dispatchSpy: jasmine.Spy;
   let mockSelectTodos: MemoizedSelector<any, Todo[]>;
   let mockSelectTodosFilter: MemoizedSelector<any, TodosFilter>;
-  let mockSelectRemoveDoneTodosDisabled: MemoizedSelector<any, boolean>;
   let loader: HarnessLoader;
-  let storage: AngularFireStorage;
 
   const getOpenFilterButton = () =>
     loader.getHarness(MatButtonHarness.with({ selector: '.todos-filter' }));
@@ -78,10 +72,6 @@ describe('TodosComponent', () => {
     store = TestBed.inject(MockStore);
     mockSelectTodos = store.overrideSelector(selectTodos, []);
     mockSelectTodosFilter = store.overrideSelector(selectTodosFilter, 'ACTIVE');
-    mockSelectRemoveDoneTodosDisabled = store.overrideSelector(
-      selectRemoveDoneTodosDisabled,
-      true
-    );
     fixture = TestBed.createComponent(TodosContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
