@@ -36,10 +36,6 @@ import {
   metaReducers,
   selectRouterState
 } from './core.state';
-import { AuthEffects } from './auth/auth.effects';
-import { selectIsAuthenticated, selectAuth } from './auth/auth.selectors';
-import { authLogin, authLogout } from './auth/auth.actions';
-import { AuthGuardService } from './auth/auth-guard.service';
 import { TitleService } from './title/title.service';
 import {
   ROUTE_ANIMATIONS_ELEMENTS,
@@ -74,19 +70,17 @@ import {
   faInstagram,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 
 export {
   TitleService,
-  selectAuth,
-  authLogin,
-  authLogout,
   routeAnimations,
   AppState,
   LocalStorageService,
-  selectIsAuthenticated,
   ROUTE_ANIMATIONS_ELEMENTS,
   AnimationsService,
-  AuthGuardService,
   selectRouterState,
   NotificationService,
   selectEffectiveTheme,
@@ -120,18 +114,19 @@ export function httpLoaderFactory(http: HttpClient) {
     MatSnackBarModule,
     MatButtonModule,
 
+    // Firestore & Firebase-related
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireAnalyticsModule,
+
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([
-      AuthEffects,
-      SettingsEffects,
-      GoogleAnalyticsEffects
-    ]),
+    EffectsModule.forRoot([SettingsEffects, GoogleAnalyticsEffects]),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({
-          name: 'Angular NgRx Material Starter'
+          name: 'Skilio Todo'
         }),
 
     // 3rd party

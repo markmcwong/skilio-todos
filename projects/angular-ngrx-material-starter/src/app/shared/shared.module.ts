@@ -27,6 +27,7 @@ import {
   FaIconLibrary
 } from '@fortawesome/angular-fontawesome';
 import {
+  faPaperclip,
   faPlus,
   faEdit,
   faTrash,
@@ -117,6 +118,7 @@ import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
 export class SharedModule {
   constructor(faIconLibrary: FaIconLibrary) {
     faIconLibrary.addIcons(
+      faPaperclip,
       faGithub,
       faMediumM,
       faPlus,

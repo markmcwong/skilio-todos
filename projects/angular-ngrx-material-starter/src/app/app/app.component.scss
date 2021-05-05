@@ -36,8 +36,9 @@ mat-sidenav-container {
       img {
         position: relative;
         top: -2px;
-        width: 48px;
+        width: auto;
         height: 48px;
+        margin-right: 10px;
       }
     }
 

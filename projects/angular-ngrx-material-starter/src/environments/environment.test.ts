@@ -1,7 +1,7 @@
 const packageJson = require('../../../../package.json');
 
 export const environment = {
-  appName: 'Angular Ngrx Material Starter',
+  appName: 'Skilio Todo',
   envName: 'TEST',
   production: false,
   test: true,

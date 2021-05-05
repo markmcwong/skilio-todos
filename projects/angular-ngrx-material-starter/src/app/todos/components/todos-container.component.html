@@ -1,0 +1,155 @@
+<div class='container'>
+  <div class='row'>
+    <div class='offset-sm-2 col-sm-8 entry'>
+      <anms-big-input rtl [placeholder]="'anms.examples.todos.input' | translate" [value]='newTodo'
+                      (keyup)='onNewTodoChange($event.target.value)'
+                      (keyup.enter)='!isAddTodoDisabled && onAddTodo()' (keyup.escape)='onNewTodoClear()'>
+        <anms-big-input-action fontSet='fas' fontIcon='fa-plus' faIcon='plus' color='accent'
+                               (action)='onAddTodo()' [disabled]='isAddTodoDisabled'
+                               [matTooltip]="'anms.examples.todos.tooltip.add' | translate"
+                               matTooltipPosition='before'>
+        </anms-big-input-action>
+        <anms-big-input-action fontSet='fas' fontIcon='fa-paperclip' faIcon='paperclip' color='warn'
+                               matTooltipPosition='after' (action)='fileInput.click()'>
+        </anms-big-input-action>
+      </anms-big-input>
+      <mat-toolbar>
+        <!-- Display files names -->
+        <mat-form-field>
+          <input matInput class="fileName col-4" [(ngModel)]='fileAttr' readonly name='name' />
+        </mat-form-field>
+      </mat-toolbar>
+    </div>
+    <input type='file' #fileInput id='uploadFile' (change)='uploadFileEvt($event)' name='uploadFile'
+           multiple='multiple'
+           accept='image/*' />
+  </div>
+  <div class='row'>
+    <ng-container *ngIf='todos$ | async as todos'>
+      <div class='offset-sm-2 col-sm-8'>
+        <h2 class='dotos-title' rtl>
+          <span>{{ 'anms.examples.todos.list' | translate }}</span>
+          <button class='todos-filter' mat-icon-button [matMenuTriggerFor]='todosFilter'>
+            <fa-icon icon='filter'></fa-icon>
+          </button>
+          <mat-menu class='todos-filter-menu-overlay' #todosFilter='matMenu' xPosition='before'>
+            <button mat-menu-item (click)="onFilterTodos('ALL')" [class.active]="(filter$ | async) === 'ALL'" rtl>
+              <mat-icon>
+                <fa-icon icon='tasks'></fa-icon>
+              </mat-icon>
+              <span>{{ 'anms.examples.todos.filter.all' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="onFilterTodos('DONE')" [class.active]="(filter$ | async) === 'DONE'">
+              <mat-icon>
+                <fa-icon icon='check'></fa-icon>
+              </mat-icon>
+              <span>{{ 'anms.examples.todos.filter.done' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="onFilterTodos('ACTIVE')" [class.active]="(filter$ | async) === 'ACTIVE'">
+              <mat-icon>
+                <fa-icon icon='square'></fa-icon>
+              </mat-icon>
+              <span>{{ 'anms.examples.todos.filter.active' | translate }}</span>
+            </button>
+          </mat-menu>
+          <mat-chip-list class='todos-filter-info d-none d-sm-block d-md-none d-lg-block'>
+            <mat-chip [disabled]=true [ngPlural]='todos.length'>
+              {{ 'anms.examples.todos.filter.description' | translate }}
+              <ng-template ngPluralCase='other'>{{ todos.length }} {{ 'anms.examples.todos.filter.items' |
+                translate }}</ng-template>
+              <ng-template ngPluralCase='=1'>{{ 'anms.examples.todos.filter.one' | translate }} {{
+                'anms.examples.todos.filter.item' | translate }}</ng-template>
+              <ng-template ngPluralCase='=0'>{{ 'anms.examples.todos.filter.none' | translate }} {{
+                'anms.examples.todos.filter.items' | translate }}</ng-template>
+            </mat-chip>
+          </mat-chip-list>
+        </h2>
+        <div cdkDropList [cdkDropListData]='todos'>
+          <div *ngFor='let todo of todos'>
+            <mat-expansion-panel *ngIf='todo.imgUrl !== ""' [cdkDragData]='todo' cdkDrag class='todos expansion-panel col-12'
+                                 [ngClass]='routeAnimationsElements' hideToggle expanded
+                                 style='padding-right: 0px;padding-left:0px' >
+              <!-- [hideToggle]='todo.imgUrl !== "" ? false : true'-->
+              <mat-expansion-panel-header style='margin-right: 15px;padding-left:0px; width:99%'>
+                <div class='row d-flex flex-row col-12' style='margin-left: 0px;'>
+                  <mat-checkbox class='col col-sm-1 col-1 align-self-center' [checked]='todo.done'
+                                (change)='onToggleTodo(todo)' style='padding-right:0px'></mat-checkbox>
+                  <div class='col align-self-center' style='padding-left:0px'>
+                    <ng-template #noEditingTodoTmpl>
+                      <span class='todo-label text-left' [ngClass]="{ 'todo-label-done': todo.done }"
+                            (click)='onToggleTodo(todo)'>
+                        <fa-icon icon='paperclip'></fa-icon>
+                      &nbsp;{{todo.name}}&nbsp;
+                      </span>
+                    </ng-template>
+                    <div *ngIf='selectedTodo$ | async as selectedTodo; else noEditingTodoTmpl'>
+                      <div *ngIf='selectedTodo == todo; else noEditingTodoTmpl' class='col-sm-12'>
+                        <mat-form-field>
+                          <input matInput
+                                 [value]='selectedTodo.name' required autofocus
+                                 (keyup)='onEditingTodoValue($event.target.value)'
+                                 (keyup.enter)='onEditTodoSubmit(selectedTodo)' (keyup.escape)='onNewTodoClear()'>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='col col-sm-auto col-md-auto col-lg-auto col-auto align-self-center' style='margin-right:25px'>
+                    <button (click)='onRemoveTodo(todo)' mat-icon-button color='accent'
+                            class='col-sm-6 fixed'>
+                      <fa-icon icon='times'></fa-icon>
+                    </button>
+                    <button (click)='onEditTodo(todo)' mat-icon-button color='accent'
+                            class='col-sm-6 fixed'>
+                      <fa-icon icon='edit'></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-expansion-panel-header>
+              <img class='col-10' alt [src]='todo.imgUrl'/>
+              <mat-card *cdkDragPreview class='todo col-4'>
+                  <span class='offset-1 todo-label text-left' [ngClass]="{ 'todo-label-done': todo.done }">
+                    {{todo.name}}
+                  </span>
+              </mat-card>
+            </mat-expansion-panel>
+            <mat-card cdkDrag *ngIf='todo.imgUrl === ""' class='todos row d-flex flex-row col-12'>
+              <mat-checkbox class='col col-sm-1 col-1 align-self-center' [checked]='todo.done'
+                            (change)='onToggleTodo(todo)'></mat-checkbox>
+              <div class='col align-self-center'>
+                <ng-template #noEditingTodoTmpl>
+                  <span class='todo-label text-left' [ngClass]="{ 'todo-label-done': todo.done }"
+                        (click)='onToggleTodo(todo)'>
+                  &nbsp;{{todo.name}}&nbsp;
+                </span>
+                </ng-template>
+                <div *ngIf='selectedTodo$ | async as selectedTodo; else noEditingTodoTmpl'>
+                  <div *ngIf='selectedTodo == todo; else noEditingTodoTmpl' class='col-5'>
+                    <mat-form-field>
+                      <input matInput
+                             [value]='selectedTodo.name' required autofocus
+                             (keyup)='onEditingTodoValue($event.target.value)'
+                             (keyup.enter)='onEditTodoSubmit(selectedTodo)' (keyup.escape)='onNewTodoClear()'>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class='col col-sm-auto col-md-auto col-lg-auto col-auto align-self-center'>
+                <button (click)='onRemoveTodo(todo)' mat-icon-button color='accent'
+                        class='col-sm-6 fixed'>
+                  <fa-icon icon='times'></fa-icon>
+                </button>
+                <button (click)='onEditTodo(todo)' mat-icon-button color='accent'
+                        class='col-sm-6 fixed'>
+                  <fa-icon icon='edit'></fa-icon>
+                </button>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+        <br>
+        <br>
+      </div>
+    </ng-container>
+  </div>
+
+</div>
