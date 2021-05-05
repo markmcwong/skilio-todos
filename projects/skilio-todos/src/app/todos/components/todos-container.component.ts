@@ -157,8 +157,11 @@ export class TodosContainerComponent implements OnInit {
     if (imgFile.target.files && imgFile.target.files[0]) {
       this.fileAttr = imgFile.target.files[0].name;
       const file = imgFile.target.files[0];
-      const fileRef = this.storage.ref('/').child(this.fileAttr);
-      const task = this.storage.upload(Date.now() + '-' + this.fileAttr, file);
+      const dateNow = Date.now();
+      const fileRef = this.storage
+        .ref('/')
+        .child(dateNow + '-' + this.fileAttr);
+      const task = this.storage.upload(dateNow + '-' + this.fileAttr, file);
       task
         .snapshotChanges()
         .pipe(
