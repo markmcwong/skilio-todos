@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
-  AngularFirestoreCollection,
-  DocumentChangeAction
+  AngularFirestoreCollection
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Todo } from './todos.model';
@@ -34,16 +33,14 @@ export class TodosService {
   }
 
   getTodos(): Observable<Todo[]> {
-    return this.todosRef
-      .snapshotChanges()
-      .pipe(
-        map((changes) =>
-          changes.map((c) => ({
-            id: c.payload.doc.id,
-            ...c.payload.doc.data()
-          }))
-        )
-      );
+    return this.todosRef.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map((c) => ({
+          id: c.payload.doc.id,
+          ...c.payload.doc.data()
+        }))
+      )
+    );
   }
 
   updateTodo(id: string, name: string): Promise<void> {

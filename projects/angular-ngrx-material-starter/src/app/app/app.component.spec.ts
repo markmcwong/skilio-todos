@@ -8,7 +8,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import {
   selectEffectiveTheme,
-  selectIsAuthenticated,
   selectSettingsLanguage,
   selectSettingsStickyHeader
 } from '../core/core.module';

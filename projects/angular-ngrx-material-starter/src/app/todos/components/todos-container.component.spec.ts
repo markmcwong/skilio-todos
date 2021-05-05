@@ -19,6 +19,13 @@ import {
   selectTodos,
   selectTodosFilter
 } from '../todos.selectors';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireModule } from '@angular/fire';
+import {
+  AngularFirestore,
+  AngularFirestoreModule
+} from '@angular/fire/firestore';
+import { environment } from '../../../environments/environment.test';
 
 describe('TodosComponent', () => {
   let store: MockStore;
@@ -29,6 +36,7 @@ describe('TodosComponent', () => {
   let mockSelectTodosFilter: MemoizedSelector<any, TodosFilter>;
   let mockSelectRemoveDoneTodosDisabled: MemoizedSelector<any, boolean>;
   let loader: HarnessLoader;
+  let storage: AngularFireStorage;
 
   const getOpenFilterButton = () =>
     loader.getHarness(MatButtonHarness.with({ selector: '.todos-filter' }));
@@ -42,7 +50,8 @@ describe('TodosComponent', () => {
   const getTodoInput = () =>
     fixture.debugElement.query(By.css('anms-big-input input'));
 
-  const getTodoItems = () => fixture.debugElement.queryAll(By.css('.todo'));
+  const getTodoItems = () =>
+    fixture.debugElement.queryAll(By.css('.todo-label'));
 
   const getTodoItem = () => fixture.debugElement.query(By.css('.todo-label'));
 
@@ -53,16 +62,15 @@ describe('TodosComponent', () => {
     return buttons[0];
   };
 
-  const getRemoveDoneTodosButton = async () => {
-    const buttons = await loader.getAllHarnesses(
-      MatButtonHarness.with({ selector: 'anms-big-input-action button' })
-    );
-    return buttons[1];
-  };
-
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, NoopAnimationsModule, TranslateModule.forRoot()],
+      imports: [
+        SharedModule,
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFirestoreModule,
+        NoopAnimationsModule,
+        TranslateModule.forRoot()
+      ],
       declarations: [TodosContainerComponent],
       providers: [provideMockStore()]
     });
@@ -78,7 +86,6 @@ describe('TodosComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
-
     dispatchSpy = spyOn(store, 'dispatch');
   });
 
@@ -90,31 +97,14 @@ describe('TodosComponent', () => {
   });
 
   it('should display todos', () => {
-    mockSelectTodos.setResult([{ id: '1', name: 'test', done: false }]);
+    mockSelectTodos.setResult([
+      { id: '1', name: 'test', done: false, timestamp: 0 }
+    ]);
     store.refreshState();
     fixture.detectChanges();
 
     expect(getTodoItems().length).toBe(1);
     expect(getTodoItems()[0].nativeElement.textContent.trim()).toBe('test');
-  });
-
-  it('should dispatch remove "DONE" todos action', async () => {
-    mockSelectTodos.setResult([
-      { id: '1', name: 'test 1', done: true },
-      { id: '2', name: 'test 2', done: false }
-    ]);
-    mockSelectRemoveDoneTodosDisabled.setResult(false);
-    store.refreshState();
-    fixture.detectChanges();
-    dispatchSpy.calls.reset();
-
-    const removeDoneTodosButton = await getRemoveDoneTodosButton();
-    await removeDoneTodosButton.click();
-
-    expect(dispatchSpy).toHaveBeenCalledTimes(1);
-    expect(dispatchSpy).toHaveBeenCalledWith(
-      todoActions.actionTodosRemoveDone()
-    );
   });
 
   it('should dispatch add todo action', async () => {
@@ -154,31 +144,7 @@ describe('TodosComponent', () => {
     );
   });
 
-  it('should dispatch toggle todo action', () => {
-    mockSelectTodos.setResult([{ id: '1', name: 'test 1', done: true }]);
-    store.refreshState();
-    fixture.detectChanges();
-    dispatchSpy.calls.reset();
-
-    getTodoItem().nativeElement.click();
-    fixture.detectChanges();
-
-    expect(dispatchSpy).toHaveBeenCalledTimes(1);
-    expect(dispatchSpy).toHaveBeenCalledWith(
-      todoActions.actionTodosToggle({ id: '1' })
-    );
-  });
-
-  it('should disable remove done todos button if no todo is done', async () => {
-    fixture.detectChanges();
-
-    const removeDoneTodosButton = await getRemoveDoneTodosButton();
-    const removeDoneTodosButtonIsDisabled = await removeDoneTodosButton.isDisabled();
-
-    expect(removeDoneTodosButtonIsDisabled).toBe(true);
-  });
-
-  it('should disable add new todo button if input length is less than 4', async () => {
+  it('should disable add new todo button if input length is less than 3', async () => {
     fixture.detectChanges();
 
     const keyUpEvent = new KeyboardEvent('keyup', {
@@ -187,7 +153,7 @@ describe('TodosComponent', () => {
       shiftKey: false
     });
 
-    getTodoInput().nativeElement.value = 'add';
+    getTodoInput().nativeElement.value = 'ad';
     getTodoInput().nativeElement.dispatchEvent(keyUpEvent);
     fixture.detectChanges();
     const addTodoButton = await getAddTodoButton();

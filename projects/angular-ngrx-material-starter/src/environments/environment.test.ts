@@ -20,5 +20,14 @@ export const environment = {
     typescript: packageJson.devDependencies['typescript'],
     cypress: packageJson.devDependencies['cypress'],
     eslint: packageJson.devDependencies['eslint']
+  },
+  firebaseConfig: {
+    apiKey: 'AIzaSyBwp2h2pSH-LOmABsEm2zgr-HqcQnDOg8o',
+    authDomain: 'skilio-todo.firebaseapp.com',
+    projectId: 'skilio-todo',
+    storageBucket: 'skilio-todo.appspot.com',
+    messagingSenderId: '690651932859',
+    appId: '1:690651932859:web:ab2bce815e8ff63e1da19e',
+    measurementId: 'G-RKWWT82312'
   }
 };

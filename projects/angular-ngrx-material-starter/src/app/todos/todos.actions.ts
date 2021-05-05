@@ -32,7 +32,7 @@ export const actionTodosGetError = createAction(
 
 export const actionTodosToggle = createAction(
   '[Todos] Toggle',
-  props<{ id: string; name: string; done: boolean }>()
+  props<{ id: string; done: boolean }>()
 );
 
 export const actionTodosEdit = createAction(

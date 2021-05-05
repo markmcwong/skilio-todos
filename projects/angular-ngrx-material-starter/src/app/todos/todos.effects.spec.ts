@@ -46,13 +46,13 @@ describe('TodosEffects', () => {
         const { cold } = helpers;
 
         const todosState: TodosState = {
-          items: [{ id: '1', name: 'Test ToDo', done: false }],
-          filter: 'ALL'
+          items: [{ id: '1', name: 'Test ToDo', done: false, timestamp: 0 }],
+          filter: 'ALL',
+          editing: null
         };
         store.pipe.and.returnValue(of(todosState));
         const persistAction = actionTodosToggle({
           done: false,
-          name: '',
           id: 'a'
         });
         const source = cold('a', { a: persistAction });

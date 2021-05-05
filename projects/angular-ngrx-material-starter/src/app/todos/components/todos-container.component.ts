@@ -30,6 +30,7 @@ import { selectTodos, selectRemoveDoneTodosDisabled } from '../todos.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodosContainerComponent implements OnInit {
+  @ViewChild('fileInput') fileInput: ElementRef;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   todos$: Observable<Todo[]>;
   filter$: Observable<TodosFilter>;
@@ -39,7 +40,6 @@ export class TodosContainerComponent implements OnInit {
   isEdit$: Observable<boolean>;
   selectedTodo$: Observable<Todo>;
   coffeeOrders;
-  @ViewChild('fileInput') fileInput: ElementRef;
   fileAttr = 'No File Chosen';
   imgUrl = '';
 
