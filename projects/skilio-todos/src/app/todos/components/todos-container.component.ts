@@ -36,7 +36,6 @@ export class TodosContainerComponent implements OnInit {
   filter$: Observable<TodosFilter>;
   newTodo = '';
   editingValue = '';
-  isEdit$: Observable<boolean>;
   selectedTodo$: Observable<Todo>;
   fileAttr = 'No File Chosen';
   imgUrl = '';
@@ -54,11 +53,6 @@ export class TodosContainerComponent implements OnInit {
     this.todos$ = this.store.pipe(select(selectTodos));
     this.selectedTodo$ = this.store.pipe(select(selectSelectedTodo));
     this.filter$ = this.store.pipe(select(selectTodosFilter));
-    // Checks if user has selected a todos to edit by checking null
-    this.isEdit$ = this.store.pipe(
-      select(selectSelectedTodo),
-      map((editingSelectedTodo) => editingSelectedTodo != null)
-    );
   }
 
   get isAddTodoDisabled() {

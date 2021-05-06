@@ -127,13 +127,17 @@
                 </ng-template>
                 <!-- if editing, show input -->
                 <div *ngIf='selectedTodo$ | async as selectedTodo; else noEditingTodoTmpl'>
-                  <div *ngIf='selectedTodo == todo; else noEditingTodoTmpl' class='col-5'>
-                    <mat-form-field>
+                  <div *ngIf='selectedTodo == todo; else noEditingTodoTmpl'>
+                    <mat-form-field class='col-auto col-sm-9'>
                       <input matInput
                              [value]='selectedTodo.name' required autofocus
                              (keyup)='onEditingTodoValue($event.target.value)'
                              (keyup.enter)='onEditTodoSubmit(selectedTodo)' (keyup.escape)='onNewTodoClear()'>
                     </mat-form-field>
+                    <button (click)='onEditTodoSubmit(todo)' mat-icon-button color='accent'
+                            class='fixed d-none d-sm-inline-block'>
+                      <fa-icon icon='check'></fa-icon>
+                    </button>
                   </div>
                 </div>
               </div>
